@@ -1,0 +1,17 @@
+
+
+MeetingServer 是会议服务器，用于创建，进入，管理会议房间，会控等功能
+
+StreamServer 是流服务器，用于转发流媒体，
+
+
+2个服务器只支持 64位的 WINDOWS 和 LINUX平台
+
+会议服务启动前，需先配置下 config.ini，指定一个监听端口 (UDP)，同时支持 IPV6和IPV4。
+
+流服务器可以带一个端口参数, -port，如果未指定，默认使用10005端口，如果指定则使用
+特定端口，例如: StreamServer -port 8989
+
+Linux版停止服务，输入命令行 meeting_server stop
+
+

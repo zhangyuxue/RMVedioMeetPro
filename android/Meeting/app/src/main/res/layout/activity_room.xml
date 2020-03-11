@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="workvideo.meeting.RoomActivity">
+
+        <workvideo.meeting.TitleBar
+            android:id="@+id/titleBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meetingSdk.media.PlayerView
+            android:id="@+id/playerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meeting.TitleBar
+            android:id="@+id/titleBar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meetingSdk.media.PlayerView
+            android:id="@+id/playerView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meeting.TitleBar
+            android:id="@+id/titleBar3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meetingSdk.media.PlayerView
+            android:id="@+id/playerView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar3"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meeting.TitleBar
+            android:id="@+id/titleBar4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meetingSdk.media.PlayerView
+            android:id="@+id/playerView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar4"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meeting.TitleBar
+            android:id="@+id/titleBar5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <workvideo.meetingSdk.media.PlayerView
+            android:id="@+id/playerView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar5"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <workvideo.meetingSdk.media.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+
+    <RelativeLayout android:id="@+id/layoutMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ff101010"
+        android:padding="5dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            >
+
+            <Button
+                android:id="@+id/buttonSend"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="发送:关"
+                android:textSize="15sp" />
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/buttonSource"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="采集:摄像头"
+                android:textSize="15sp" />
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/buttonRotate"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="屏幕旋转"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:text="菜单" />
+
+
+</android.widget.RelativeLayout>
