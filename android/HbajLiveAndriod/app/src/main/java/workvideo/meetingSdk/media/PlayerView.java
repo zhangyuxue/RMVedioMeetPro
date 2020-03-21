@@ -87,6 +87,11 @@ public class PlayerView extends SurfaceView implements SurfaceHolder.Callback
         Video.player_get_wave(mHandle, wave);
     }
 
+    // 返回源
+    public int get_source(long[] list) {
+        return Video.player_get_source(mHandle, list);
+    }
+
     // 音量控制
     public int volume()
     {

@@ -7,17 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class MeetAdapter extends BaseAdapter {
+class InvitAdapter extends BaseAdapter {
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
     ArrayList<HashMap<String, String>> listItem;
 
-    public MeetAdapter(Context context,ArrayList<HashMap<String, String>> listItem) {
+    public InvitAdapter(Context context,ArrayList<HashMap<String, String>> listItem) {
         this.mInflater = LayoutInflater.from(context);
         this.listItem = listItem;
     }//声明构造函数
@@ -42,31 +43,48 @@ class MeetAdapter extends BaseAdapter {
     {
         public String text;
         public TextView textTitle;
+        public TextView usrstate;
+        public CheckBox mycheckbox;
     }//声明一个外部静态类
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder holder ;
+        final ViewHolder holder ;
         if(convertView == null)
         {
             holder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.activity_meetitem, null);
-            holder.textTitle = (TextView)convertView.findViewById(R.id.meetingName);
+            convertView = mInflater.inflate(R.layout.activity_invititem, null);
+            holder.textTitle = (TextView)convertView.findViewById(R.id.invitName);
+            holder.mycheckbox = (CheckBox)convertView.findViewById(R.id.mycheckbox);
+            holder.usrstate = (TextView)convertView.findViewById(R.id.usrstate);
             convertView.setTag(holder);
         }
         else {
             holder = (ViewHolder)convertView.getTag();
-
         }
-        HashMap<String,String> obj = (HashMap<String,String>)getItem(position);
+        final HashMap<String,String> obj = (HashMap<String,String>)getItem(position);
         holder.text = ((String) listItem.get(position).get("ItemText"));
         holder.textTitle.setText((String) obj.get("ItemTitle"));
-//        holder.textTitle.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
+        if(obj.get("ItemMeet").toString().equals(""))
+        {
+            holder.usrstate.setText("在线");
+        }
+        else{
+            holder.usrstate.setText("会议中");
+        }
+
+        holder.mycheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.mycheckbox.isChecked())
+                {
+                    listItem.get(position).put("ItemCheck","1");
+                }
+                else{
+                    listItem.get(position).put("ItemCheck","0");
+                }
+            }
+        });
 
         return convertView;
     }//这个方法返回了指定索引对应的数据项的视图

@@ -52,6 +52,7 @@ public class Meeting
     // 开始/关闭 推送
     // uri: "fvideo://ip:port/uid"
     // uri=null 则关闭推送
-    public static native void push_to(String uri);
+    // index: 推送索引， 0/1，可以同时推送2路流
+    public static native boolean push(int index, String uri);
 }
 

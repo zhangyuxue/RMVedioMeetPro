@@ -69,4 +69,8 @@ public class Video
 
     // 返回音量
     static native int player_get_volume(long handle);
+
+    // 返回源 （一个信号可能包含多个源，例如混合后的语音）
+    // 返回值为源数量, list[] 将被填入源ID
+    static native int player_get_source(long handle, long[] list);
 }

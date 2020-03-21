@@ -20,10 +20,13 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.Vector;
 
 public class InvitActivity extends AppCompatActivity {
 
     private ListView lvusers;
+    private Button invitUsers;
+    InvitAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,31 @@ public class InvitActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        invitUsers = (Button)findViewById(R.id.invitUsers);
+        invitUsers.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                try {
+                    Vector<String> str;
+                    str = new Vector<>();
+                    for (int i=0;i<adapter.listItem.size();i++)
+                    {
+                        String state = adapter.listItem.get(i).get("ItemCheck").toString();
+                        if (state.equals("1"))
+                        {
+                            str.addElement(adapter.listItem.get(i).get("ItemText").toString());
+                        }
+                    }
+                    TcpCompare.sharedCenter().invitUsers(str);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
     public void initUserListView(JsonArray datas){
@@ -46,9 +74,19 @@ public class InvitActivity extends AppCompatActivity {
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("ItemText", dataelement.get("Msg_useruid").getAsString());//加入图片
             map.put("ItemTitle",dataelement.get("Msg_userName").getAsString());
+            map.put("ItemMeet","");
+            if(!dataelement.get("Msg_JionMeetID").getAsString().equals(""))
+            {
+                map.put("ItemMeet",dataelement.get("Msg_JionMeetID").getAsString());
+            }
+            if(!dataelement.get("Msg_CreateMeetID").getAsString().equals(""))
+            {
+                map.put("ItemMeet",dataelement.get("Msg_CreateMeetID").getAsString());
+            }
+            map.put("ItemCheck","0");
             listItem.add(map);
         }
-        MeetAdapter adapter = new MeetAdapter(this, listItem);
+        adapter = new InvitAdapter(this, listItem);
         lvusers.setAdapter(adapter);//为ListView绑定适配器
 
 //        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

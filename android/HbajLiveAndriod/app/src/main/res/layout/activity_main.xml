@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     android:orientation="vertical">
     <workvideo.meetingSdk.media.CameraView
         android:id="@+id/cameraView"
@@ -15,64 +16,93 @@
         android:layout_width="100dp"
         android:layout_height="100dp"/>
     <workvideo.meetingSdk.media.PlayerView
+        android:id="@+id/playeraudio"
+        android:layout_width="1dp"
+        android:layout_height="1dp"/>
+    <Button
+        android:id="@+id/nextpagebt"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:text="下一页"/>
+    <workvideo.meetingSdk.media.PlayerView
         android:id="@+id/playerView0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/playerView"/>
+        android:layout_below="@+id/nextpagebt"
+        android:layout_alignParentRight="true"/>
     <workvideo.meetingSdk.media.PlayerView
         android:id="@+id/playerView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/playerView0"
-        android:layout_below="@+id/playerView"/>
+        android:layout_below="@+id/playerView0"
+        android:layout_alignParentRight="true"/>
     <workvideo.meetingSdk.media.PlayerView
         android:id="@+id/playerView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/playerView1"
-        android:layout_below="@+id/playerView"/>
+        android:layout_below="@+id/playerView1"
+        android:layout_alignParentRight="true"/>
     <workvideo.meetingSdk.media.PlayerView
         android:id="@+id/playerView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/playerView2"
-        android:layout_below="@+id/playerView"/>
-
+        android:layout_below="@+id/playerView2"
+        android:layout_alignParentRight="true"/>
+    <Button
+        android:id="@+id/prepagebt"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="上一页"/>
     <LinearLayout
         android:id="@+id/bottombar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true">
         <Button
-            android:id="@+id/nextpagebt"
+            android:id="@+id/exitmeet"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="离开会议"/>
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="下一页"/>
+            android:layout_weight="3"/>
         <Button
             android:id="@+id/startCamera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="开启摄像头"/>
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/micopenclose"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
         <Button
             android:id="@+id/startDesktop"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="开启桌面"/>
+            android:layout_weight="1"/>
         <Button
             android:id="@+id/invitUsers"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="邀请参会者"/>
-        <Button
-            android:id="@+id/prepagebt"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="上一页"/>
+            android:layout_weight="6"/>
+
     </LinearLayout>
 
 </android.widget.RelativeLayout>

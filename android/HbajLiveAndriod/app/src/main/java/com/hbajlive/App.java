@@ -39,6 +39,8 @@ public class App extends Application {
     public static String gStreamServer;
     public static String gUserLevel;
     public static String gMeetingName;
+    public static String gStreamAudioServer;
+    public static String gMeetingID;
 
     Vector<JsonObject> gUserList;
 
@@ -83,6 +85,7 @@ public class App extends Application {
         TcpCenter.sharedCenter().setConnectedCallback(new TcpCenter.OnServerConnectedCallbackBlock() {
             @Override
             public void callback() {
+                if(activelogin != null)
                 activelogin.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(activelogin, "连接成功", Toast.LENGTH_SHORT).show();
@@ -114,77 +117,102 @@ public class App extends Application {
                     if(actiiveMeet != null)
                         actiiveMeet.runOnUiThread(new Runnable() {
                             public void run() {
-                                     actiiveMeet.showMainActive();
+                                String createid = myJsonObject.get("Msg_CreateMeetID").getAsString();
+                                gMeetingID = createid;
+                                if(createid.equals("0"))
+                                {
+                                    Toast.makeText(actiiveMeet, "会议已经存在！", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                else
+                                {
+                                    actiiveMeet.showMainActive();
+                                }
                         }
                     });
                 }else if(msgtype.equals("JionMeet")) {
                     if (actiiveMain == null)
                     {
+                        String jionid = myJsonObject.get("Msg_JionMeetID").getAsString();
+                        if(jionid.equals("0"))
+                        {
+                            Toast.makeText(actiiveMeet, "会议不存在！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        gMeetingID = jionid;
+                        Boolean addif=true;
+                        for (int i=0;i<gUserList.size();i++)
+                        {
+                            JsonObject obj = gUserList.elementAt(i);
+                            String useruid = myJsonObject.get("Msg_useruid").getAsString();
+                            if(obj.get("Msg_useruid").getAsString().equals(useruid))
+                            {
+                                addif=false;
+                                break;
+                            }
+                        }
+                        if(addif)
+                        {
+                            gUserList.addElement(myJsonObject);
+                            try {
+                                TcpCompare.sharedCenter().jionMeeting(
+                                        myJsonObject.get("Msg_JionMeetID").getAsString(),
+                                        gUserName,
+                                        App.getInstance().gUserUID,
+                                        App.getInstance().gUserPusherID,
+                                        myJsonObject.get("Msg_meetName").getAsString(),
+                                        App.getInstance().gUserLevel);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(actiiveMeet != null)
                         actiiveMeet.runOnUiThread(new Runnable() {
                             public void run() {
-
-                                Boolean addif=true;
-                                for (int i=0;i<gUserList.size();i++)
-                                {
-                                    JsonObject obj = gUserList.elementAt(i);
-                                    String useruid = myJsonObject.get("Msg_useruid").getAsString();
-                                    if(obj.get("Msg_useruid").getAsString().equals(useruid))
-                                    {
-                                        addif=false;
-                                        break;
-                                    }
-                                }
-                                if(addif)
-                                {
-                                    gUserList.addElement(myJsonObject);
-                                    try {
-                                        TcpCompare.sharedCenter().jionMeeting(
-                                                myJsonObject.get("Msg_JionMeetID").getAsString(),
-                                                gUserName,
-                                                App.getInstance().gUserUID,
-                                                App.getInstance().gUserPusherID,
-                                                myJsonObject.get("Msg_meetName").getAsString(),
-                                                App.getInstance().gUserLevel);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                actiiveMeet.showMainActive();
-
+                                if(actiiveMeet != null)
+                                    actiiveMeet.showMainActive();
                             }
                         });
+                        if(actiiveMain != null)
+                            actiiveMain.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    actiiveMain.FlushVideos();
+                                }
+                            });
                     }
                     else
                     {
-                        actiiveMain.runOnUiThread(new Runnable() {
-                            public void run() {
+                        Boolean addif=true;
+                        for (int i=0;i<gUserList.size();i++)
+                        {
+                            JsonObject obj = gUserList.elementAt(i);
+                            String useruid = myJsonObject.get("Msg_useruid").getAsString();
+                            if(obj.get("Msg_useruid").getAsString().equals(useruid))
+                            {
+                                addif=false;
+                                break;
+                            }
+                        }
+                        if(addif)
+                        {
+                            gUserList.addElement(myJsonObject);
+                            try {
+                                TcpCompare.sharedCenter().jionMeeting(
+                                        myJsonObject.get("Msg_JionMeetID").getAsString(),
+                                        gUserName,
+                                        App.getInstance().gUserUID,
+                                        App.getInstance().gUserPusherID,
+                                        myJsonObject.get("Msg_meetName").getAsString(),
+                                        App.getInstance().gUserLevel);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-                                Boolean addif=true;
-                                for (int i=0;i<gUserList.size();i++)
-                                {
-                                    JsonObject obj = gUserList.elementAt(i);
-                                    String useruid = myJsonObject.get("Msg_useruid").getAsString();
-                                    if(obj.get("Msg_useruid").getAsString().equals(useruid))
-                                    {
-                                        addif=false;
-                                        break;
-                                    }
-                                }
-                                if(addif)
-                                {
-                                    gUserList.addElement(myJsonObject);
-                                    try {
-                                        TcpCompare.sharedCenter().jionMeeting(
-                                                myJsonObject.get("Msg_JionMeetID").getAsString(),
-                                                gUserName,
-                                                App.getInstance().gUserUID,
-                                                App.getInstance().gUserPusherID,
-                                                myJsonObject.get("Msg_meetName").getAsString(),
-                                                App.getInstance().gUserLevel);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+                        }
+                        gMeetingID = myJsonObject.get("Msg_JionMeetID").getAsString();
+                        if(actiiveMain != null)
+                         actiiveMain.runOnUiThread(new Runnable() {
+                            public void run() {
                                 actiiveMain.FlushVideos();
                             }
                         });
@@ -205,8 +233,12 @@ public class App extends Application {
                         }
                     }
                     if(removindex != -1)
+                    {
                         gUserList.remove(removindex);
-                    actiiveMain.FlushVideos();
+                        if(actiiveMain != null)
+                            actiiveMain.FlushVideos();
+                    }
+
                 }else if(msgtype.equals("GetMeetingList"))
                 {
                     final JsonArray meetlist = myJsonObject.get("Msg_meetlist").getAsJsonArray();
@@ -233,8 +265,34 @@ public class App extends Application {
                         });
 
                     }
-                }
+                }else if(msgtype.equals("InvitUsers")) {
 
+                    if (actiiveMeet != null)
+                    {
+                        if(actiiveMain==null)
+                        {
+                            actiiveMeet.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    actiiveMeet.showInvitDialog(myJsonObject);
+                                }
+                            });
+                        }
+
+
+                    }
+                }else if(msgtype.equals("SetScreenMode")) {
+
+                    if (actiiveMain != null)
+                    {
+                        actiiveMain.runOnUiThread(new Runnable() {
+                            public void run() {
+                                String screenuid = myJsonObject.get("Msg_useruid").getAsString();
+                                actiiveMain.setScreenMode(screenuid);
+                            }
+                        });
+
+                    }
+                }
             }
         });
     }

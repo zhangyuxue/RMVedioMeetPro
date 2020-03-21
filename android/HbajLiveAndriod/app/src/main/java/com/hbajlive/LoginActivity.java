@@ -20,7 +20,8 @@ public class LoginActivity extends AppCompatActivity {
 
     Button conserbt;
 
-    EditText ipSteam;
+    EditText ipVideoSteam;
+    EditText ipAudioSteam;
     EditText ipWork;
     EditText nickname;
     EditText nickLevel;
@@ -37,7 +38,8 @@ public class LoginActivity extends AppCompatActivity {
 
     void getVidwByID()
     {
-        ipSteam= (EditText) findViewById(R.id.ipStream);
+        ipVideoSteam= (EditText) findViewById(R.id.ipVideoStream);
+        ipAudioSteam= (EditText) findViewById(R.id.ipAudioStream);
         ipWork= (EditText) findViewById(R.id.ipWork);
         conserbt = (Button) findViewById(R.id.connectServerBt);
         nickname = (EditText) findViewById(R.id.namenick);
@@ -47,7 +49,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 App.getInstance().gWorkServer=ipWork.getText().toString();
-                App.getInstance().gStreamServer=ipSteam.getText().toString();
+                App.getInstance().gStreamServer=ipVideoSteam.getText().toString();
+                App.getInstance().gStreamAudioServer=ipAudioSteam.getText().toString();
+
                 App.getInstance().gUserName = nickname.getText().toString();
                 App.getInstance().gUserLevel = nickLevel.getText().toString();
                 App.getInstance().socketConnect(App.getInstance().gWorkServer,10000);
@@ -68,5 +72,8 @@ public class LoginActivity extends AppCompatActivity {
     public void showMainActive()
     {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        App.getInstance().activelogin=null;
+        LoginActivity.this.finish();
+
     }
 }
