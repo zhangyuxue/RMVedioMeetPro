@@ -25,7 +25,7 @@ public class CameraView extends SurfaceView
     WindowManager mWM ;
 
     // 采集分辨率
-    static int Resolution =(320<<16)|(240);
+    static int Resolution =(640<<16)|(480);
 
     public CameraView(Context context)
     {
