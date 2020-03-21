@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -131,6 +132,11 @@ public class MainActivity extends VideoActivity {
         setContentView(R.layout.activity_main);
         App.getInstance().actiiveMain=this;
 
+        if (Build.VERSION.SDK_INT >= 11) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+        }
+
         checkPermission();
 
         Sound.instance.run(); //开启声音设备 (或则需要时开启)       Sound.have_jobs() ?
@@ -212,7 +218,7 @@ public class MainActivity extends VideoActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    TcpCompare.sharedCenter().LeaveSelf(App.getInstance().gUserUID);
+                    TcpCompare.LeaveSelf(App.getInstance().gUserUID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -362,7 +368,7 @@ public class MainActivity extends VideoActivity {
                 mainView.play(Video.LayerBitVideoMedium);
 
                 try {
-                    TcpCompare.sharedCenter().setSreenMode(App.getInstance().gUserUID);
+                    TcpCompare.setSreenMode(App.getInstance().gUserUID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

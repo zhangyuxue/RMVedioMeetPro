@@ -93,7 +93,7 @@ public class App extends Application {
                 });
 
                 try {
-                    TcpCompare.sharedCenter().loginAndgetPusherID(gUserName,gUserLevel,gUserUID);
+                    TcpCompare.loginAndgetPusherID(gUserName,gUserLevel,gUserUID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -112,7 +112,7 @@ public class App extends Application {
                            gUserPusherID = myJsonObject.get("Msg_userpushid").getAsString();
                            activelogin.setLoginMode();
                             try {
-                                TcpCompare.sharedCenter().getMeetingList();
+                                TcpCompare.getMeetingList();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -160,7 +160,7 @@ public class App extends Application {
                         {
                             gUserList.addElement(myJsonObject);
                             try {
-                                TcpCompare.sharedCenter().jionMeeting(
+                                TcpCompare.jionMeeting(
                                         myJsonObject.get("Msg_JionMeetID").getAsString(),
                                         gUserName,
                                         App.getInstance().gUserUID,
@@ -202,7 +202,7 @@ public class App extends Application {
                         {
                             gUserList.addElement(myJsonObject);
                             try {
-                                TcpCompare.sharedCenter().jionMeeting(
+                                TcpCompare.jionMeeting(
                                         myJsonObject.get("Msg_JionMeetID").getAsString(),
                                         gUserName,
                                         App.getInstance().gUserUID,

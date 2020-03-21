@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.Vector;
 
+import android.os.StrictMode;
+import android.os.Build;
+
 public class InvitActivity extends AppCompatActivity {
 
     private ListView lvusers;
@@ -32,10 +35,14 @@ public class InvitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invit);
+        if (Build.VERSION.SDK_INT >= 11) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+        }
         App.getInstance().actiiveInvit=this;
         lvusers = (ListView)findViewById(R.id.lvusers);
         try {
-            TcpCompare.sharedCenter().getUserList();
+            TcpCompare.getUserList();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -55,7 +62,7 @@ public class InvitActivity extends AppCompatActivity {
                             str.addElement(adapter.listItem.get(i).get("ItemText").toString());
                         }
                     }
-                    TcpCompare.sharedCenter().invitUsers(str);
+                    TcpCompare.invitUsers(str);
                     finish();
                 } catch (JSONException e) {
                     e.printStackTrace();

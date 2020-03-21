@@ -3,7 +3,9 @@ package com.hbajlive;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +45,10 @@ public class MeetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meet);
 
+        if (Build.VERSION.SDK_INT >= 11) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+        }
         App.getInstance().actiiveMeet=this;
         getVidwByID();
 
@@ -89,7 +95,7 @@ public class MeetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     App.getInstance().gMeetingName = meetname.getText().toString();
-                    TcpCompare.sharedCenter().createMeeting(meetid.getText().toString()
+                    TcpCompare.createMeeting(meetid.getText().toString()
                                 ,App.getInstance().gUserName,
                                         App.getInstance().gUserUID,
                                         App.getInstance().gUserPusherID,
@@ -104,8 +110,8 @@ public class MeetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    TcpCompare.sharedCenter().jionMeeting(meetid.getText().toString()
-                            ,App.getInstance().gUserName,
+                    TcpCompare.jionMeeting(meetid.getText().toString(),
+                            App.getInstance().gUserName,
                             App.getInstance().gUserUID,
                             App.getInstance().gUserPusherID,
                             App.getInstance().gMeetingName,
@@ -159,7 +165,7 @@ public class MeetActivity extends AppCompatActivity {
                 mPlayer.release();
                 mPlayer=null;
                 try {
-                    TcpCompare.sharedCenter().jionMeeting(Msg_JionMeetID
+                    TcpCompare.jionMeeting(Msg_JionMeetID
                             ,App.getInstance().gUserName,
                             App.getInstance().gUserUID,
                             App.getInstance().gUserPusherID,
