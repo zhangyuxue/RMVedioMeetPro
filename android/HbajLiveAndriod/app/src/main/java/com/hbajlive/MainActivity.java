@@ -77,6 +77,7 @@ public class MainActivity extends VideoActivity {
         paly1.release(); //需要明确释放，否则会内存泄露
         paly2.release(); //需要明确释放，否则会内存泄露
         paly3.release(); //需要明确释放，否则会内存泄露
+        playeraudio.release();
 
         Meeting.cleanup();
 
@@ -194,7 +195,6 @@ public class MainActivity extends VideoActivity {
         changeVideoSize(1,0,0,scaledsize,scaledsize,paly2);
         changeVideoSize(1,0,0,scaledsize,scaledsize,paly3);
 
-
         String loadaudio = "faudio://"+
                 App.getInstance().gStreamAudioServer+"/"
                 +App.getInstance().gMeetingID+"/"
@@ -207,8 +207,6 @@ public class MainActivity extends VideoActivity {
         Meeting.set_mic_state(Meeting.ON);
         playeraudio.play(Video.LayerBitAudio | Video.LayerBitVideoMedium);
 
-
-
         exitmeet = (Button)findViewById(R.id.exitmeet);
         exitmeet.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -218,8 +216,6 @@ public class MainActivity extends VideoActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
                MainActivity.this.finish();
             }
         });
@@ -357,13 +353,13 @@ public class MainActivity extends VideoActivity {
                 String loadurl = "fvideo://"+
                         App.getInstance().gStreamServer+"/"
                         +App.getInstance().gUserPusherID;
-                String loadaudio = "faudio://"+
-                        App.getInstance().gStreamAudioServer+"/"
-                        +App.getInstance().gMeetingID+"/"
-                        +App.getInstance().gUserPusherID;
+//                String loadaudio = "faudio://"+
+//                        App.getInstance().gStreamAudioServer+"/"
+//                        +App.getInstance().gMeetingID+"/"
+//                        +App.getInstance().gUserPusherID;
                 Meeting.push(0,loadurl);
                 mainView.load(loadurl);
-                mainView.play(Video.LayerBitVideoHighest);
+                mainView.play(Video.LayerBitVideoMedium);
 
                 try {
                     TcpCompare.sharedCenter().setSreenMode(App.getInstance().gUserUID);
@@ -395,7 +391,7 @@ public class MainActivity extends VideoActivity {
 //            mainView.load("faudio://"+
 //                    App.getInstance().gStreamAudioServer+"/"
 //                    +App.getInstance().gMeetingID);
-            mainView.play(Video.LayerBitVideoHigh);
+            mainView.play(Video.LayerBitVideoMedium);
         }
     }
 
@@ -420,7 +416,7 @@ public class MainActivity extends VideoActivity {
             int realindex = i - videoIndex;
             int playmast = 0;
 //            if (App.getInstance().gUserPusherID.equals(pushid)) {
-                playmast = Video.LayerBitVideoHighest;
+                playmast = Video.LayerBitVideoMedium;
 //            } else
 //            {
 //                playmast = Video.LayerBitAudio | Video.LayerBitVideoLow;
