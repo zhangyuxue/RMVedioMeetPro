@@ -81,8 +81,7 @@ public class MainActivity extends VideoActivity {
         playeraudio.release();
 
         Meeting.cleanup();
-
-
+        System.exit(0);
     }
 
     public void changeVideoSize(int orientation,int startx,int stary,int W,int H,PlayerView playview) {
@@ -215,6 +214,7 @@ public class MainActivity extends VideoActivity {
                 +App.getInstance().gUserPusherID;
         Meeting.push(0,loadurl);
         mainView.load(loadurl);
+        mainView.play(Video.LayerBitVideoMedium);
 
         exitmeet = (Button)findViewById(R.id.exitmeet);
         exitmeet.setOnClickListener(new View.OnClickListener(){
@@ -261,13 +261,6 @@ public class MainActivity extends VideoActivity {
                     cameraView.setLayoutParams(params3);
 
                     Video.set_source(Video.source_camera);
-
-                    String loadurl = "fvideo://"+
-                            App.getInstance().gStreamServer+"/"
-                            +App.getInstance().gUserPusherID;
-                    Meeting.push(0,loadurl);
-                    mainView.load(loadurl);
-                    mainView.play(Video.LayerBitVideoMedium);
 
                     startCamera.setText(R.string.videoclose);
                 }
@@ -343,11 +336,7 @@ public class MainActivity extends VideoActivity {
                 startScreenCapture();
 
                 Meeting.set_mic_state(Meeting.ON);
-                String loadurl = "fvideo://"+
-                        App.getInstance().gStreamServer+"/"
-                        +App.getInstance().gUserPusherID;
-                mainView.load(loadurl);
-                mainView.play(Video.LayerBitVideoMedium);
+
                 try {
                     TcpCompare.setSreenMode(App.getInstance().gUserUID);
                 } catch (JSONException e) {
@@ -356,7 +345,6 @@ public class MainActivity extends VideoActivity {
 
             }
         });
-
     }
 
     public void ChangePlayer(int indexadd)
@@ -396,31 +384,26 @@ public class MainActivity extends VideoActivity {
                 case 0:
                 {
                     paly0.load(loadurl);
-                    paly0.play(Video.LayerBitVideoLowest);
                 }
                 break;
                 case 1:
                 {
                     paly1.load(loadurl);
-                    paly1.play(Video.LayerBitVideoLowest);
                 }
                 break;
                 case 2:
                 {
                     paly2.load(loadurl);
-                    paly2.play(Video.LayerBitVideoLowest);
                 }
                 break;
                 case 3:
                 {
                     paly3.load(loadurl);
-                    paly3.play(Video.LayerBitVideoLowest);
                 }
                 break;
             }
         }
     }
-
 
     public void setScreenMode(String uid) {
 
@@ -454,5 +437,4 @@ public class MainActivity extends VideoActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }
