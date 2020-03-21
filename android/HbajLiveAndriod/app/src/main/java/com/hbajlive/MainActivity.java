@@ -179,7 +179,7 @@ public class MainActivity extends VideoActivity {
         paly1.play(Video.LayerBitVideoLowest);
         paly2.play(Video.LayerBitVideoLowest);
         paly3.play(Video.LayerBitVideoLowest);
-        mainView.play(Video.LayerBitVideoMedium);
+
 
         WindowManager manager = this.getWindowManager();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -252,23 +252,13 @@ public class MainActivity extends VideoActivity {
                     cameraView.setLayoutParams(params3);
 
                     Video.set_source(Video.source_camera);
-                    //Meeting.push(0,null);
-                    //Meeting.push(1,null);
-                    //mainView.load(null);
+
                     String loadurl = "fvideo://"+
                             App.getInstance().gStreamServer+"/"
                             +App.getInstance().gUserPusherID;
-                    String loadaudio = "faudio://"+
-                            App.getInstance().gStreamAudioServer+"/"
-                            +App.getInstance().gMeetingID+"/"
-                            +App.getInstance().gUserPusherID;
                     Meeting.push(0,loadurl);
-                    //Meeting.push(1,loadaudio);
                     mainView.load(loadurl);
-//                    mainView.load("faudio://"+
-//                            App.getInstance().gStreamAudioServer+"/"
-//                            +App.getInstance().gMeetingID);
-
+                    mainView.play(Video.LayerBitVideoMedium);
                     startCamera.setText(R.string.videoclose);
                 }
                 else
@@ -351,6 +341,7 @@ public class MainActivity extends VideoActivity {
 //                        +App.getInstance().gUserPusherID;
                 Meeting.push(0,loadurl);
                 mainView.load(loadurl);
+                mainView.play(Video.LayerBitVideoMedium);
                 try {
                     TcpCompare.setSreenMode(App.getInstance().gUserUID);
                 } catch (JSONException e) {
@@ -399,21 +390,25 @@ public class MainActivity extends VideoActivity {
                 case 0:
                 {
                     paly0.load(loadurl);
+                    paly0.play(Video.LayerBitVideoLowest);
                 }
                 break;
                 case 1:
                 {
                     paly1.load(loadurl);
+                    paly1.play(Video.LayerBitVideoLowest);
                 }
                 break;
                 case 2:
                 {
                     paly2.load(loadurl);
+                    paly2.play(Video.LayerBitVideoLowest);
                 }
                 break;
                 case 3:
                 {
                     paly3.load(loadurl);
+                    paly3.play(Video.LayerBitVideoLowest);
                 }
                 break;
             }

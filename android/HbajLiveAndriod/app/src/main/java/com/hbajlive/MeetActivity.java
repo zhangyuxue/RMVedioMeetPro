@@ -52,7 +52,11 @@ public class MeetActivity extends AppCompatActivity {
         App.getInstance().actiiveMeet=this;
         getVidwByID();
 
-
+        try {
+            TcpCompare.getMeetingList();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
