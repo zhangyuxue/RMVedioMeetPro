@@ -47,11 +47,7 @@ public class MeetActivity extends AppCompatActivity {
         getVidwByID();
 
 
-        try {
-            TcpCompare.sharedCenter().getMeetingList();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void initMeetingListView(JsonArray datas){

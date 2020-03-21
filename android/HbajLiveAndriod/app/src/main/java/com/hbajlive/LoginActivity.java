@@ -67,13 +67,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void setLoginMode(){
         startActivity(new Intent(LoginActivity.this, MeetActivity.class));
-    }
-
-    public void showMainActive()
-    {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         App.getInstance().activelogin=null;
         LoginActivity.this.finish();
-
     }
+
 }

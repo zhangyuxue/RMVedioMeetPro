@@ -111,6 +111,11 @@ public class App extends Application {
                         public void run() {
                            gUserPusherID = myJsonObject.get("Msg_userpushid").getAsString();
                            activelogin.setLoginMode();
+                            try {
+                                TcpCompare.sharedCenter().getMeetingList();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }else if(msgtype.equals("CreateMeet")) {
