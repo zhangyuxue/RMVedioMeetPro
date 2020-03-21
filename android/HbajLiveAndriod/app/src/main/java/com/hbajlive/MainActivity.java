@@ -195,6 +195,7 @@ public class MainActivity extends VideoActivity {
         changeVideoSize(1,0,0,scaledsize,scaledsize,paly2);
         changeVideoSize(1,0,0,scaledsize,scaledsize,paly3);
 
+        // 开启语音接收和推送
         String loadaudio = "faudio://"+
                 App.getInstance().gStreamAudioServer+"/"
                 +App.getInstance().gMeetingID+"/"
@@ -204,8 +205,16 @@ public class MainActivity extends VideoActivity {
         playeraudio.load("faudio://"+
                             App.getInstance().gStreamAudioServer+"/"
                             +App.getInstance().gMeetingID);
-        Meeting.set_mic_state(Meeting.ON);
         playeraudio.play(Video.LayerBitAudio);
+
+        Meeting.set_mic_state(Meeting.ON);
+
+        // 开启视频推送
+        String loadurl = "fvideo://"+
+                App.getInstance().gStreamServer+"/"
+                +App.getInstance().gUserPusherID;
+        Meeting.push(0,loadurl);
+        mainView.load(loadurl);
 
         exitmeet = (Button)findViewById(R.id.exitmeet);
         exitmeet.setOnClickListener(new View.OnClickListener(){
@@ -252,27 +261,14 @@ public class MainActivity extends VideoActivity {
                     cameraView.setLayoutParams(params3);
 
                     Video.set_source(Video.source_camera);
-                    //Meeting.push(0,null);
-                    //Meeting.push(1,null);
-                    //mainView.load(null);
-                    String loadurl = "fvideo://"+
-                            App.getInstance().gStreamServer+"/"
-                            +App.getInstance().gUserPusherID;
-                    String loadaudio = "faudio://"+
-                            App.getInstance().gStreamAudioServer+"/"
-                            +App.getInstance().gMeetingID+"/"
-                            +App.getInstance().gUserPusherID;
-                    Meeting.push(0,loadurl);
-                    //Meeting.push(1,loadaudio);
-                    mainView.load(loadurl);
-//                    mainView.load("faudio://"+
-//                            App.getInstance().gStreamAudioServer+"/"
-//                            +App.getInstance().gMeetingID);
 
                     startCamera.setText(R.string.videoclose);
                 }
                 else
                 {
+                    Video.set_source(Video.source_none);
+                    cameraView.setVisibility(View.INVISIBLE);
+
                     localCamerastate=false;
                     startCamera.setText(R.string.videoopen);
                 }
@@ -335,8 +331,6 @@ public class MainActivity extends VideoActivity {
         startDesktop.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Meeting.push(0,null);
-                //Meeting.push(1,null);
                 cameraView.setVisibility(View.INVISIBLE);
                 Video.set_source(Video.source_screen);
                 startScreenCapture();
@@ -345,11 +339,6 @@ public class MainActivity extends VideoActivity {
                 String loadurl = "fvideo://"+
                         App.getInstance().gStreamServer+"/"
                         +App.getInstance().gUserPusherID;
-//                String loadaudio = "faudio://"+
-//                        App.getInstance().gStreamAudioServer+"/"
-//                        +App.getInstance().gMeetingID+"/"
-//                        +App.getInstance().gUserPusherID;
-                Meeting.push(0,loadurl);
                 mainView.load(loadurl);
                 try {
                     TcpCompare.setSreenMode(App.getInstance().gUserUID);
