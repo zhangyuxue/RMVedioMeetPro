@@ -14,14 +14,15 @@ import java.net.Socket;
 public class TcpCenter {
     private static TcpCenter instance;
     private static final String TAG = "TaskCenter";
-    String Tempstr;
-//    Socket
-    private Socket socket;
+
+    //    Socket
+    private Socket m_socket =null;
 //    IP地址
-    private String ipAddress;
+    private String m_ipAddress;
 //    端口号
-    private int port;
-    private Thread thread;
+    private int m_port;
+    private Thread m_thread =null;
+
 //    Socket输出流
     private OutputStream outputStream;
 //    Socket输入流
@@ -47,30 +48,23 @@ public class TcpCenter {
         }
         return instance;
     }
-    /**
-     * 通过IP地址(域名)和端口进行连接
-     *
-     * @param ipAddress  IP地址(域名)
-     * @param port       端口
-     */
-    public void connect(final String ipAddress, final int port) {
-        Tempstr = new String();
-        thread = new Thread(new Runnable() {
+
+    void start_thread()
+    {
+        m_thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    socket = new Socket(ipAddress, port);
+                    m_socket = new Socket(m_ipAddress, m_port);
 //                    socket.setSoTimeout ( 2 * 1000 );//设置超时时间
                     if (isConnected()) {
-                        TcpCenter.sharedCenter().ipAddress = ipAddress;
-                        TcpCenter.sharedCenter().port = port;
+                        outputStream = m_socket.getOutputStream();
+                        inputStream = m_socket.getInputStream();
+                        Log.i(TAG,"连接成功");
                         if (connectedCallback != null) {
                             connectedCallback.callback();
                         }
-                        outputStream = socket.getOutputStream();
-                        inputStream = socket.getInputStream();
-                        receive();
-                        Log.i(TAG,"连接成功");
+                        receive_loop();
                     }else {
                         Log.i(TAG,"连接失败");
                         if (disconnectedCallback != null) {
@@ -86,51 +80,92 @@ public class TcpCenter {
                 }
             }
         });
-        thread.start();
+        m_thread.start();
+    }
+
+    /**
+     * 通过IP地址(域名)和端口进行连接
+     *
+     * @param ipAddress  IP地址(域名)
+     * @param port       端口
+     */
+    public void connect(final String ipAddress, final int port)
+    {
+        // 先退出旧的线程
+        disconnect();
+
+        // 启动连接线程
+        m_ipAddress =ipAddress;
+        m_port =port;
+
+        synchronized (this)
+        {
+            if(m_thread==null)
+                start_thread();
+        }
     }
     /**
      * 判断是否连接
      */
-    public boolean isConnected() {
-        return socket.isConnected();
+    public boolean isConnected()
+    {
+        return m_socket!=null && m_socket.isConnected();
     }
     /**
      * 连接
      */
     public void connect() {
-        connect(ipAddress,port);
+        connect(m_ipAddress,m_port);
     }
     /**
      * 断开连接
      */
-    public void disconnect() {
-        if (isConnected()) {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-                socket.close();
-                if (socket.isClosed()) {
-                    if (disconnectedCallback != null) {
-                        disconnectedCallback.callback(new IOException("断开连接"));
+    public void disconnect()
+    {
+        boolean notify =false;
+        synchronized (this)
+        {
+            if (m_thread != null) {
+                if (m_socket != null) {
+                    try {
+                        if (outputStream != null)
+                            outputStream.close();
+                        m_socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    outputStream = null;
+                    m_socket = null;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                try {
+                    m_thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                m_thread = null;
+                notify =true;
             }
         }
+        if (disconnectedCallback != null && notify)
+            disconnectedCallback.callback(new IOException("断开连接"));
     }
     /**
      * 接收数据
      */
-    public void receive() {
-        while (isConnected()) {
+    public void receive_loop()
+    {
+        String Tempstr =new String();
+        while (isConnected())
+        {
             try {
                 /**得到的是16进制数，需要进行解析*/
 
                 int count = 65535;
                 byte[] bt = new byte[count];
                 int readCount = inputStream.read(bt);
+
+                Log.w(TAG, "read() got: "+readCount);
 
 //                获取正确的字节
                 byte[] bs = new byte[readCount];
@@ -178,25 +213,21 @@ public class TcpCenter {
      *
      * @param data  数据
      */
-    public void send(final byte[] data) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (socket != null) {
-                    try {
-                        outputStream.write(data);
-                        outputStream.flush();
-                        Log.i(TAG,"发送成功");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.i(TAG,"发送失败");
-                    }
-                } else {
-                    connect();
-                }
+    public boolean send(final byte[] data)
+    {
+        synchronized (this) {
+            if (null ==outputStream)
+                return false;
+            try {
+                outputStream.write(data);
+                outputStream.flush();
+                Log.w(TAG, "send() done.");
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }).start();
-
+        }
+        return false;
     }
     /**
      * 回调声明
@@ -225,7 +256,8 @@ public class TcpCenter {
     /**
      * 移除回调
      */
-    private void removeCallback() {
+    private void removeCallback()
+    {
         connectedCallback = null;
         disconnectedCallback = null;
         receivedCallback = null;
