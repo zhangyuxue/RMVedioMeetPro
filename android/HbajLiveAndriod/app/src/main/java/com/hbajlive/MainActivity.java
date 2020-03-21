@@ -86,25 +86,19 @@ public class MainActivity extends VideoActivity {
 
     public void changeVideoSize(int orientation,int startx,int stary,int W,int H,PlayerView playview) {
         int resolution = playview.resolution();
-//                        int w =
-//                        int h =;
-        int videoWidth = 640;// resolution >>16;;
-        int videoHeight = 480;//resolution &0xffff;
-
-        //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
-        float max;
-        //if (getResources().getConfiguration().orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        if(orientation == 1){
-            //竖屏模式下按视频宽度计算放大倍数值
-            max = Math.max((float) videoWidth / (float) W,(float) videoHeight /H);
-        } else{
-            //横屏模式下按视频高度计算放大倍数值
-            max = Math.max(((float) videoWidth/(float) W),(float) videoHeight/(float)H);
+        int videoWidth = resolution >>16;;
+        int videoHeight = resolution &0xffff;
+        if(videoHeight <=0 || videoWidth <=0) {
+            videoHeight =240;
+            videoWidth =320;
         }
 
+        //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
+        float ratio = Math.min(((float) W/(float) videoWidth),(float) H/(float)videoHeight);
+
         //视频宽高分别/最大倍数值 计算出放大后的视频尺寸
-        videoWidth = (int) Math.ceil((float) videoWidth / max);
-        videoHeight = (int) Math.ceil((float) videoHeight / max);
+        videoWidth = (int) Math.ceil((float) videoWidth *ratio);
+        videoHeight = (int) Math.ceil((float) videoHeight *ratio);
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)playview.getLayoutParams();
 
@@ -175,11 +169,11 @@ public class MainActivity extends VideoActivity {
             }
         });
 
-//            paly0.play(Video.LayerBitVideoMedium);
-//            paly1.play(Video.LayerBitVideoMedium);
-//            paly2.play(Video.LayerBitVideoMedium);
-//            paly3.play(Video.LayerBitVideoMedium);
-            //mainView.play(Video.LayerBitVideoMedium);
+        paly0.play(Video.LayerBitVideoLowest);
+        paly1.play(Video.LayerBitVideoLowest);
+        paly2.play(Video.LayerBitVideoLowest);
+        paly3.play(Video.LayerBitVideoLowest);
+        mainView.play(Video.LayerBitVideoMedium);
 
         WindowManager manager = this.getWindowManager();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -205,7 +199,7 @@ public class MainActivity extends VideoActivity {
                             App.getInstance().gStreamAudioServer+"/"
                             +App.getInstance().gMeetingID);
         Meeting.set_mic_state(Meeting.ON);
-        playeraudio.play(Video.LayerBitAudio | Video.LayerBitVideoMedium);
+        playeraudio.play(Video.LayerBitAudio);
 
         exitmeet = (Button)findViewById(R.id.exitmeet);
         exitmeet.setOnClickListener(new View.OnClickListener(){
@@ -270,18 +264,12 @@ public class MainActivity extends VideoActivity {
 //                            +App.getInstance().gMeetingID);
 
                     startCamera.setText(R.string.videoclose);
-                    mainView.play(Video.LayerBitVideoHighest);
                 }
                 else
                 {
                     localCamerastate=false;
                     startCamera.setText(R.string.videoopen);
                 }
-
-
-
-
-
             }
         });
 
@@ -343,8 +331,6 @@ public class MainActivity extends VideoActivity {
             public void onClick(View v) {
                 Meeting.push(0,null);
                 //Meeting.push(1,null);
-                mainView.stop();
-                mainView.load(null);
                 cameraView.setVisibility(View.INVISIBLE);
                 Video.set_source(Video.source_screen);
                 startScreenCapture();
@@ -359,8 +345,6 @@ public class MainActivity extends VideoActivity {
 //                        +App.getInstance().gUserPusherID;
                 Meeting.push(0,loadurl);
                 mainView.load(loadurl);
-                mainView.play(Video.LayerBitVideoMedium);
-
                 try {
                     TcpCompare.sharedCenter().setSreenMode(App.getInstance().gUserUID);
                 } catch (JSONException e) {
@@ -378,8 +362,6 @@ public class MainActivity extends VideoActivity {
         int currentindex = videoIndex+indexadd;
         if(currentindex < totalUsers)
         {
-            mainView.stop();
-            mainView.load(null);
             JsonObject obj = App.getInstance().gUserList.elementAt(currentindex);
             String pushid = obj.get("Msg_userpushid").getAsString();
 
@@ -388,19 +370,11 @@ public class MainActivity extends VideoActivity {
                     +pushid;
 
             mainView.load(loadurl);
-//            mainView.load("faudio://"+
-//                    App.getInstance().gStreamAudioServer+"/"
-//                    +App.getInstance().gMeetingID);
-            mainView.play(Video.LayerBitVideoMedium);
         }
     }
 
     public void FlushVideos()
     {
-        paly0.stop();
-        paly1.stop();
-        paly2.stop();
-        paly3.stop();
         paly0.load(null);
         paly1.load(null);
         paly2.load(null);
@@ -413,38 +387,27 @@ public class MainActivity extends VideoActivity {
             String loadurl = "fvideo://" +
                     App.getInstance().gStreamServer + "/"
                     + pushid;
-            int realindex = i - videoIndex;
-            int playmast = 0;
-//            if (App.getInstance().gUserPusherID.equals(pushid)) {
-                playmast = Video.LayerBitVideoMedium;
-//            } else
-//            {
-//                playmast = Video.LayerBitAudio | Video.LayerBitVideoLow;
-//            }
-            switch (realindex)
+
+            switch (i - videoIndex)
             {
                 case 0:
                 {
                     paly0.load(loadurl);
-                    paly0.play(playmast);
                 }
                 break;
                 case 1:
                 {
                     paly1.load(loadurl);
-                    paly1.play(playmast);
                 }
                 break;
                 case 2:
                 {
                     paly2.load(loadurl);
-                    paly2.play(playmast);
                 }
                 break;
                 case 3:
                 {
                     paly3.load(loadurl);
-                    paly3.play(playmast);
                 }
                 break;
             }
@@ -465,9 +428,7 @@ public class MainActivity extends VideoActivity {
                         App.getInstance().gStreamServer + "/"
                         + pushid;
 
-                mainView.load(null);
                 mainView.load(loadurl);
-                //mainView.play(Video.LayerBitVideoHighest);
             }
         }
 
