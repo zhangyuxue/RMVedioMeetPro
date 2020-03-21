@@ -249,7 +249,6 @@ public class MainActivity extends VideoActivity {
         startCamera.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                FlushVideos();
                 if(localCamerastate == false)
                 {
                     localCamerastate=true;
@@ -321,7 +320,6 @@ public class MainActivity extends VideoActivity {
                     Meeting.set_mic_state(Meeting.ON);
                     micopenclose.setText(R.string.micopen);
                 }
-
             }
         });
 
@@ -342,7 +340,6 @@ public class MainActivity extends VideoActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
     }
@@ -366,12 +363,8 @@ public class MainActivity extends VideoActivity {
 
     public void FlushVideos()
     {
-        paly0.load(null);
-        paly1.load(null);
-        paly2.load(null);
-        paly3.load(null);
-
-        for (int i=videoIndex;i<App.getInstance().gUserList.size();i++) {
+        for (int i=videoIndex;i<App.getInstance().gUserList.size();i++)
+        {
             JsonObject obj = App.getInstance().gUserList.elementAt(i);
             String pushid = obj.get("Msg_userpushid").getAsString();
 
@@ -421,7 +414,6 @@ public class MainActivity extends VideoActivity {
                 mainView.load(loadurl);
             }
         }
-
     }
 
     public static int dip2px(Context context,float dpValue){
