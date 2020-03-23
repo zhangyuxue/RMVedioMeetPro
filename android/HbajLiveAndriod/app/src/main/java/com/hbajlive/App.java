@@ -49,6 +49,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
+        gMeetingID="";
         gUserList = new Vector<>();
         // 启动SDK
         Meeting.startup();
@@ -132,15 +133,26 @@ public class App extends Application {
                         }
                     });
                 }else if(msgtype.equals("JionMeet")) {
+
                     if (actiiveMain == null)
                     {
                         String jionid = myJsonObject.get("Msg_JionMeetID").getAsString();
                         if(jionid.equals("0"))
                         {
-                            Toast.makeText(actiiveMeet, "会议不存在！", Toast.LENGTH_SHORT).show();
+                            if (actiiveMeet != null)
+                            {
+                                actiiveMeet.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(actiiveMeet, "会议不存在！", Toast.LENGTH_SHORT).show();
+                                        gMeetingID="";
+                                    }
+                                });
+                            }
+
                             return;
                         }
-                        gMeetingID = jionid;
+                        if(!gMeetingID.equals(jionid))
+                            return;
                         Boolean addif=true;
                         for (int i=0;i<gUserList.size();i++)
                         {
@@ -174,6 +186,7 @@ public class App extends Application {
                                     actiiveMeet.showMainActive();
                             }
                         });
+                        //因为网络可能比界面显示的要快
                         if(actiiveMain != null)
                             actiiveMain.runOnUiThread(new Runnable() {
                                 public void run() {
@@ -183,6 +196,9 @@ public class App extends Application {
                     }
                     else
                     {
+                        String jionid = myJsonObject.get("Msg_JionMeetID").getAsString();
+                        if(!gMeetingID.equals(jionid))
+                            return;
                         Boolean addif=true;
                         for (int i=0;i<gUserList.size();i++)
                         {
@@ -210,7 +226,7 @@ public class App extends Application {
                             }
 
                         }
-                        gMeetingID = myJsonObject.get("Msg_JionMeetID").getAsString();
+
                         if(actiiveMain != null)
                          actiiveMain.runOnUiThread(new Runnable() {
                             public void run() {

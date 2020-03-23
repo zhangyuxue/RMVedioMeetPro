@@ -247,7 +247,7 @@ void CFVideoDlg::OnBnClickedButton3()
 
 		capturer->set_video_source(video_src_null);
 
-		capturer->set_push(nullptr);
+		capturer->push(0,nullptr);
 
 		preview->play(0);
 
@@ -267,7 +267,7 @@ void CFVideoDlg::OnBnClickedButton3()
 		CString uri;
 		GetDlgItemText(IDC_EDIT1, uri);
 		Utf8Str uri_sz(uri);
-		capturer->set_push(uri_sz);
+		capturer->push(0,uri_sz);
 
 		SetDlgItemText(IDC_BUTTON3, L"停止");
 	}

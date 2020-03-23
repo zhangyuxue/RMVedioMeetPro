@@ -638,7 +638,7 @@ void CRoomDialog::OnBnClickedButton1()
 		GetDlgItemText(IDC_EDIT2, uri);
 
 		Utf8Str utf(uri);
-		if (!m_capture->set_push(utf))
+		if (!m_capture->push(0,utf))
 		{
 			MessageBox(L"无效的推送地址");
 		}

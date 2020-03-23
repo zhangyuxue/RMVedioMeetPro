@@ -98,6 +98,7 @@ public class MeetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    App.getInstance().gMeetingID=meetid.getText().toString();
                     App.getInstance().gMeetingName = meetname.getText().toString();
                     TcpCompare.createMeeting(meetid.getText().toString()
                                 ,App.getInstance().gUserName,
@@ -114,6 +115,7 @@ public class MeetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    App.getInstance().gMeetingID=meetid.getText().toString();
                     TcpCompare.jionMeeting(meetid.getText().toString(),
                             App.getInstance().gUserName,
                             App.getInstance().gUserUID,
@@ -169,6 +171,7 @@ public class MeetActivity extends AppCompatActivity {
                 mPlayer.release();
                 mPlayer=null;
                 try {
+                    App.getInstance().gMeetingID=Msg_JionMeetID;
                     TcpCompare.jionMeeting(Msg_JionMeetID
                             ,App.getInstance().gUserName,
                             App.getInstance().gUserUID,

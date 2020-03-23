@@ -81,13 +81,23 @@ enum rc_layer_bit
 };
 typedef void* signal_handle;
 
+// 信号源列表 (可能有多个，例如混合后的语音流)
+typedef struct source_list
+{
+	uint32_t count;
+	rc_userid list[10u];
+} source_list;
+
 // 播放器
 struct rc_video_player
 {
 	// 删除对象
 	virtual void release() = 0;
 
-	// 载入信号源
+	// 返回源 (信号是谁 ?)
+	virtual rc_bool get_source(source_list* src) = 0;
+
+	// 载入信号
 	// fvideo:// ... 
 	// rtmp:// ...
 	virtual rc_bool load(const char* url) = 0;
@@ -143,7 +153,8 @@ struct rc_video_capturer
 {
 	// 开启/关闭 推送
 	// uri: fvideo://192.168.1.122:10002/13509391992
-	virtual rc_bool set_push(const char* uri) = 0;
+	// index: 发送器索引 [0-1]，可以同时发送2路流
+	virtual rc_bool push(const uint32_t index, const char* uri) = 0;
 
 	// 返回摄像头信号 (用于预览)
 	virtual signal_handle get_camera_signal(void) = 0;

@@ -342,6 +342,8 @@ public class MainActivity extends VideoActivity {
                 }
             }
         });
+
+        FlushVideos();
     }
 
     public void ChangePlayer(int indexadd)

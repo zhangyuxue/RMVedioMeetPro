@@ -1,0 +1,6 @@
+framework module MeetingClientSdk {
+  umbrella header "MeetingClientSdk.h"
+
+  export *
+  module * { export * }
+}
