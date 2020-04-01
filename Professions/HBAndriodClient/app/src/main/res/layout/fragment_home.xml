@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="#FFFFFF"
+    android:layout_marginTop="50dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Button
+            android:id="@+id/startMeetingBt"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_jion_background"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="25dp"
+            android:textColor="#FFFFFF"
+            android:text="发起会议"/>
+        <Button
+            android:id="@+id/willingMeetBt"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_will_background"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="50dp"
+            android:textColor="#FFFFFF"
+            android:text="预约会议"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#555555"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="参加会议：">
+        </TextView>
+        <EditText
+            android:id="@+id/meetidUse"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="其他人发起的会议号码"
+            android:background="@null"
+            android:layout_weight="1">
+        </EditText>
+        <Button
+            android:id="@+id/jionmeetBt"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="5dp"
+            android:textColor="#000000"
+            android:text="确定"/>
+    </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#555555"
+        android:orientation="vertical">
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center|left"
+        android:text="会议列表:">
+    </TextView>
+    <Button
+        android:id="@+id/flushmeetBt"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:text="刷新"/>
+</LinearLayout>
+<ListView
+    android:id="@+id/meetlistview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/topMeet"
+    android:background="#E0FFFF"
+    android:divider="@android:color/darker_gray"
+    android:dividerHeight="1dp"
+    android:scrollbars="none"/>
+</LinearLayout>

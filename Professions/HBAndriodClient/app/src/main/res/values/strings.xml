@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">河北安检应急系统</string>
+    <string name="title_home">河北应急</string>
+    <string name="title_dashboard">应急通讯录</string>
+    <string name="title_notifications">应急设置</string>
+
+    <string name="videoopen">&#xeb57;</string>
+    <string name="videoclose">&#xeb58;</string>
+    <string name="micopen">&#xe95e;</string>
+    <string name="micclose">&#xe95f;</string>
+    <string name="desktopopen">&#xe713;</string>
+    <string name="invitopen">&#xe74f;</string>
+</resources>
